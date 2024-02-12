@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotList;
 import no.runsafe.creativetoolbox.PlotManager;
@@ -31,10 +32,10 @@ public class ListCommand extends PlayerAsyncCommand
 	public String OnAsyncExecute(IPlayer executor, IArgumentList parameters)
 	{
 		if (!worldGuard.serverHasWorldGuard())
-			return "&cUnable to find WorldGuard!";
+			return Config.Message.noWorldGuard;
 
 		if (filter.getWorld() == null)
-			return "&cNo world defined!";
+			return Config.Message.noWorldDefined;
 
 		IPlayer player = parameters.getValue("player");
 		if (player == null)
@@ -45,7 +46,7 @@ public class ListCommand extends PlayerAsyncCommand
 		if (!plots.isEmpty())
 			plotList.set(executor, plots);
 		return String.format(
-			"%d plots owned by %s:\n  %s",
+				Config.Message.Plot.List.command + "\n  %s",
 			property.size(),
 			player.getPrettyName(),
 			StringUtils.join(property, "\n  ")

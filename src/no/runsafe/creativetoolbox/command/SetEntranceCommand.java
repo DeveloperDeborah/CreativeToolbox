@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.PlotEntrance;
@@ -35,16 +36,16 @@ public class SetEntranceCommand extends PlayerAsyncCommand
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
 		if (manager.isInWrongWorld(executor))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		String currentRegion = getCurrentRegion(executor);
 		if (currentRegion == null)
-			return "&cNo plot at your current location.";
+			return Config.Message.Plot.invalid;
 
 		debugger.debugFine(String.format("Player is in region %s", currentRegion));
 		if (!(executor.hasPermission("runsafe.creative.entrance.set")
 			|| worldGuard.getOwnerPlayers(executor.getWorld(), currentRegion).contains(executor)))
-			return String.format("&cYou are not allowed to set the entrance for the region %s", currentRegion);
+			return String.format(Config.Message.Plot.SetEntrance.failNoPermission, currentRegion);
 
 		return super.OnExecute(executor, parameters);
 	}
@@ -53,22 +54,22 @@ public class SetEntranceCommand extends PlayerAsyncCommand
 	public String OnAsyncExecute(IPlayer executor, IArgumentList parameters)
 	{
 		if (manager.isInWrongWorld(executor))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		String currentRegion = getCurrentRegion(executor);
 		if (currentRegion == null)
-			return "&cNo plot at your current location.";
+			return Config.Message.Plot.invalid;
 
 		debugger.debugFine(String.format("Player is in region %s", currentRegion));
 		if (!(executor.hasPermission("runsafe.creative.entrance.set")
 			|| worldGuard.getOwnerPlayers(executor.getWorld(), currentRegion).contains(executor)))
-			return String.format("&cYou are not allowed to set the entrance for the region %s", currentRegion);
+			return String.format(Config.Message.Plot.SetEntrance.failNoPermission, currentRegion);
 
 		PlotEntrance entrance = new PlotEntrance();
 		entrance.setName(currentRegion);
 		entrance.setLocation(executor.getLocation());
 		repository.persist(entrance);
-		return String.format("&aEntrance for %s set.", currentRegion);
+		return String.format(Config.Message.Plot.SetEntrance.success, currentRegion);
 	}
 
 	private String getCurrentRegion(IPlayer player)

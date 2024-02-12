@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command.Member;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.database.PlotMemberRepository;
 import no.runsafe.creativetoolbox.event.PlotMembershipRevokedEvent;
@@ -35,7 +36,7 @@ public class RemoveCommand extends PlayerAsyncCommand
 		List<String> targetPlots = plotFilter.apply(worldGuardInterface.getRegionsAtLocation(executor.getLocation()));
 		List<String> ownedRegions = worldGuardInterface.getOwnedRegions(executor, plotFilter.getWorld());
 		if (targetPlots == null || targetPlots.isEmpty())
-			return "&cNo region defined at your location!";
+			return Config.Message.Plot.invalid;
 		List<String> results = new ArrayList<>();
 		for (String region : targetPlots)
 		{
@@ -44,14 +45,14 @@ public class RemoveCommand extends PlayerAsyncCommand
 				if (worldGuardInterface.removeMemberFromRegion(plotFilter.getWorld(), region, member))
 				{
 					memberRepository.removeMember(region, member);
-					results.add(String.format("%s &awas successfully removed from the plot %s.", member.getPrettyName(), region));
+					results.add(String.format(Config.Message.Plot.Member.removeSuccess, member.getPrettyName(), region));
 					new PlotMembershipRevokedEvent(member, region).Fire();
 				}
 				else
-					results.add(String.format("&cCould not remove &r%s &cfrom the plot %s.", member.getPrettyName(), region));
+					results.add(String.format(Config.Message.Plot.Member.removeFail, member.getPrettyName(), region));
 			}
 			else
-				results.add(String.format("&cYou do not appear to be an owner of %s.", region));
+				results.add(String.format(Config.Message.Plot.notOwner, region));
 		}
 		return StringUtils.join(results, "\n");
 	}

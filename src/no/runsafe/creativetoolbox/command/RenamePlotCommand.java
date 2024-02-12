@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.Plugin;
 import no.runsafe.framework.api.command.ExecutableCommand;
@@ -27,10 +28,10 @@ public class RenamePlotCommand extends ExecutableCommand
 		if (manager.renamePlot(currentPlotName, newPlotName))
 		{
 			Plugin.console.logInformation(String.format("&aPlot %s Renamed to %s.", currentPlotName, newPlotName));
-			return String.format("&aPlot %s Renamed to %s.", currentPlotName, newPlotName);
+			return String.format(Config.Message.Plot.Rename.success, currentPlotName, newPlotName);
 		}
 		else
-			return "&cPlot could not be renamed.";
+			return Config.Message.Plot.Rename.fail;
 	}
 
 	PlotManager manager;

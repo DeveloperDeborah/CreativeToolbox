@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotCalculator;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.ApprovedPlotRepository;
@@ -33,18 +34,18 @@ public class ClaimCommand extends PlayerCommand
 	public String OnExecute(IPlayer executor, IArgumentList params)
 	{
 		if (manager.isInWrongWorld(executor))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		String current = manager.getCurrentRegionFiltered(executor);
 		if (current != null)
-			return String.format("&cThis plot is already claimed as %s!", current);
+			return String.format(Config.Message.Plot.Claim.failPreexisting, current);
 
 		if (!manager.isCurrentClaimable(executor))
-			return "&cYou may not claim a plot here.";
+			return Config.Message.Plot.Claim.failNotClaimable;
 
 		Rectangle2D region = calculator.getPlotArea(executor.getLocation());
 		if (region == null)
-			return "&cYou need to stand in a plot to use this command.";
+			return Config.Message.Plot.invalid;
 
 		IWorld world = executor.getWorld();
 		IPlayer owner = params.getValue("player");
@@ -52,7 +53,7 @@ public class ClaimCommand extends PlayerCommand
 			return null;
 		boolean selfClaim = owner.getName().equals(executor.getName());
 		if (!(executor.hasPermission("runsafe.creative.claim.others") || selfClaim))
-			return "&cYou can only claim plots for yourself.";
+			return Config.Message.Plot.Claim.failOtherNoPermissions;
 
 		List<String> existing = worldGuard.getOwnedRegions(owner, world);
 		console.debugFine("%s has %d plots.", owner, existing.size());
@@ -63,7 +64,7 @@ public class ClaimCommand extends PlayerCommand
 				PlotApproval approved = approvalRepository.get(plot);
 				console.debugFine("Plot %s is %s.", plot, approved != null ? "approved" : "unapproved");
 				if (approved == null)
-					return "&cYou may not claim another plot before all your current ones have been approved.";
+					return Config.Message.Plot.Claim.failPreviousNotApproved;
 			}
 		}
 
@@ -77,12 +78,12 @@ public class ClaimCommand extends PlayerCommand
 		{
 			members.addMember(plotName, owner, true);
 			if (owner == executor)
-				return String.format("&aNew plot \"%s\" created - use /ct teleport %d to get back to it!", plotName, n);
+				return String.format(Config.Message.Plot.Claim.succeedSelf, plotName, n);
 
-			return String.format("&aSuccessfully claimed the plot \"%s\" for &r%s&a!", plotName, owner.getPrettyName());
+			return String.format(Config.Message.Plot.Claim.succeedOther, plotName, owner.getPrettyName());
 		}
 
-		return String.format("&cUnable to claim a new plot for &r%s &c:(", owner.getPrettyName());
+		return String.format(Config.Message.Plot.Claim.fail, owner.getPrettyName());
 	}
 
 	private final PlotManager manager;

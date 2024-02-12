@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.event;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
@@ -17,7 +18,7 @@ public class CustomEvents implements IPlayerCustomEvent
 	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
 	{
 		if (event instanceof PlotApprovedEvent)
-			output.broadcastColoured("&6The creative plot &l%s&r&6 has been approved.", ((PlotApprovedEvent) event).getApproval().getName());
+			output.broadcastColoured(Config.Message.Plot.Approve.global, ((PlotApprovedEvent) event).getApproval().getName());
 
 		if (event instanceof PlotMembershipRevokedEvent)
 		{

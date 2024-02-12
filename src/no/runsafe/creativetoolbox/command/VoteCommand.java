@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.player.PlayerCommand;
@@ -17,18 +18,18 @@ public class VoteCommand extends PlayerCommand
 	public String OnExecute(IPlayer player, IArgumentList stringStringHashMap)
 	{
 		if (manager.isInWrongWorld(player))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		String region = manager.getCurrentRegionFiltered(player);
 		if (region == null)
-			return "&cThere is no plot here.";
+			return Config.Message.Plot.invalid;
 
 		if (manager.disallowVote(player, region))
-			return "&cYou are not allowed to vote for this plot.";
+			return Config.Message.Plot.Vote.failNoPermission;
 
 		return manager.vote(player, region)
-			? String.format("&aThank you for voting for the plot \"%s\".", region)
-			: "&cAn error occurred while casting ballot!";
+			? String.format(Config.Message.Plot.Vote.success, region)
+			: Config.Message.Plot.Vote.failError;
 	}
 
 	private final PlotManager manager;

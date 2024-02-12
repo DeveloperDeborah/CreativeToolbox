@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.ai;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotCalculator;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.ApprovedPlotRepository;
@@ -39,9 +40,9 @@ public class PlotClaimResponder implements IChatResponseTrigger
 			List<IPlayer> onlineStaff = server.getPlayersWithPermission("runsafe.creative.claim.others");
 			for (IPlayer staff : onlineStaff)
 				if (!player.shouldNotSee(staff))
-					return String.format("First you will need permission to build, %s - I am sure %s would help you out!", playerName, staff.getName());
+					return String.format(Config.Message.Ai.needPermissionStaff, playerName, staff.getName());
 
-			return String.format("Sorry, %s, but there are no staff online now to give you permission. Please come back a little later!", playerName);
+			return String.format(Config.Message.Ai.needPermissionNoStaff, playerName);
 		}
 
 		List<String> existing = worldGuard.getOwnedRegions(player, manager.getWorld());
@@ -53,22 +54,22 @@ public class PlotClaimResponder implements IChatResponseTrigger
 				PlotApproval approved = approvalRepository.get(plot);
 				debug.debugFine("Plot %s is %s.", plot, approved != null ? "approved" : "unapproved");
 				if (approved == null)
-					return String.format("&cYou must either get all your plots approved, or ask a member of staff to grant you a plot, %s.", playerName);
+					return String.format(Config.Message.Ai.plotsNotApproved, playerName);
 			}
 		}
 
 		boolean claimable = manager.isCurrentClaimable(player);
 		Rectangle2D region = calculator.getPlotArea(player.getLocation());
 		if (!claimable || region  == null)
-			return String.format("First you need a free plot, %s, use /ct f to find one! Once there, please use /ct claim.", playerName);
+			return String.format(Config.Message.Ai.findFreePlot, playerName);
 
-		return String.format("&aYou can claim the plot you are in now, %s; just type /ct claim!", playerName);
+		return String.format(Config.Message.Ai.claimCurrentPlot, playerName);
 	}
 
 	@Override
 	public Pattern getRule()
 	{
-		return Pattern.compile("(how|can).*(have|claim|get).*plot");
+		return Pattern.compile(Config.Message.Ai.pattern);
 	}
 
 	private final PlotManager manager;

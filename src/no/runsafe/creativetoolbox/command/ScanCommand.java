@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.command.argument.IArgumentList;
@@ -23,7 +24,7 @@ public class ScanCommand extends PlayerCommand
 		HashMap<String, Integer> counts = new HashMap<>();
 		IWorld world = manager.getWorld();
 		if (world == null)
-			return "&cCreative world not found!";
+			return Config.Message.noWorldDefined;
 
 		int count = 0;
 		for (IEntity entity : world.getEntities())
@@ -37,9 +38,9 @@ public class ScanCommand extends PlayerCommand
 				counts.put(name, counts.get(name) + 1);
 			count++;
 		}
-		StringBuilder results = new StringBuilder(String.format("%d items found:\n", count));
+		StringBuilder results = new StringBuilder(String.format(Config.Message.Plot.Scan.itemsFound + "\n", count));
 		for (String name : counts.keySet())
-			results.append(String.format("  %s: %d.\n", name, counts.get(name)));
+			results.append(String.format(Config.Message.Plot.Scan.listFormat + "\n", name, counts.get(name)));
 		return results.toString();
 	}
 

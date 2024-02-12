@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotCalculator;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
@@ -44,11 +45,11 @@ public class RegenerateCommand extends PlayerAsyncCommand
 	public String OnAsyncExecute(IPlayer executor, IArgumentList parameters)
 	{
 		if (manager.isInWrongWorld(executor))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		Rectangle2D area = getArea(executor.getLocation());
 		if (area == null)
-			return "&cNo plot at this point.";
+			return Config.Message.Plot.invalid;
 
 		List<String> candidate = filter.apply(worldGuard.getRegionsAtLocation(executor.getLocation()));
 		if (candidate != null && !candidate.isEmpty())
@@ -56,13 +57,13 @@ public class RegenerateCommand extends PlayerAsyncCommand
 			{
 				PlotApproval approval = approvedPlotRepository.get(plot);
 				if (approval != null && approval.getApproved() != null)
-					return "&cYou may not regenerate an approved plot!";
+					return Config.Message.Plot.Regenerate.failApproved;
 			}
 
 		PlotChunkGenerator.Mode mode = parameters.getValue("mode");
 		interactEvents.startRegeneration(executor, area, mode);
 
-		return "Right click the ground to confirm regeneration.";
+		return Config.Message.Plot.Regenerate.rightClick;
 	}
 
 	private Rectangle2D getArea(ILocation location)

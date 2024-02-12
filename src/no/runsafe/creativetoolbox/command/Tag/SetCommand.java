@@ -1,6 +1,7 @@
 package no.runsafe.creativetoolbox.command.Tag;
 
 import com.google.common.collect.Lists;
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.PlotTagRepository;
 import no.runsafe.framework.api.IScheduler;
@@ -23,17 +24,17 @@ public class SetCommand extends PlayerAsyncCommand
 	public String OnAsyncExecute(IPlayer player, IArgumentList param)
 	{
 		if (manager.isInWrongWorld(player))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		String plot = manager.getCurrentRegionFiltered(player);
 		if (plot == null)
-			return "&cThere is no plot here.";
+			return Config.Message.Plot.invalid;
 
 		String[] tags = ChatColour.Strip(param.getValue("tags")).split("\\s+");
 		return String.format(
 			tagRepository.setTags(plot, Lists.newArrayList(tags))
-				? "&aChanged tags for plot %s."
-				: "&cUnable to save tags for plot %s.",
+				? Config.Message.Plot.Tag.setSuccess
+				: Config.Message.Plot.Tag.setFail,
 			plot
 		);
 	}

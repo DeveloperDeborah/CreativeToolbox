@@ -1,6 +1,7 @@
 package no.runsafe.creativetoolbox.command;
 
 import com.google.common.collect.Lists;
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotList;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.framework.api.IScheduler;
@@ -12,12 +13,11 @@ import java.util.Map;
 
 public class OldPlotsCommand extends PlayerAsyncCommand
 {
-	public OldPlotsCommand(PlotManager manager, IScheduler scheduler, PlotList plotList, ConfigurationManager config)
+	public OldPlotsCommand(PlotManager manager, IScheduler scheduler, PlotList plotList)
 	{
 		super("oldplots", "list old plots that may be removed.", "runsafe.creative.scan.old-plots", scheduler);
 		this.manager = manager;
 		this.plotList = plotList;
-		this.config = config;
 	}
 
 	@Override
@@ -28,23 +28,22 @@ public class OldPlotsCommand extends PlayerAsyncCommand
 		StringBuilder result = new StringBuilder();
 		for (Map.Entry<String, String> item : hits.entrySet())
 		{
-			if (executor == null || n < config.getOldPlotsListLimit())
+			if (executor == null || n < Config.getOldPlotsListLimit())
 			{
-				result.append(String.format("%s - %s\n", item.getKey(), item.getValue()));
+				result.append(String.format(Config.Message.Plot.List.Old.listFormat + "\n", item.getKey(), item.getValue()));
 				n++;
 			}
 		}
 		if (result.length() == 0)
-			return "&cNo old plots found.";
+			return Config.Message.Plot.List.Old.notFound;
 		plotList.set(executor, Lists.newArrayList(hits.keySet()));
 		if (executor == null || n == hits.size())
-			result.append(String.format("&a%d plots found", hits.size()));
+			result.append(String.format(Config.Message.Plot.List.Old.foundNumber, hits.size()));
 		else
-			result.append(String.format("Showing %d of %d plots found", n, hits.size()));
+			result.append(String.format(Config.Message.Plot.List.Old.listShowing, n, hits.size()));
 		return result.toString();
 	}
 
 	private final PlotManager manager;
 	private final PlotList plotList;
-	private final ConfigurationManager config;
 }

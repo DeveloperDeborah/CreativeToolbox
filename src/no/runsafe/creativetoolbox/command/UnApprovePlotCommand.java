@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.ApprovedPlotRepository;
@@ -28,21 +29,21 @@ public class UnApprovePlotCommand extends PlayerAsyncCommand
 		if (parameters.getValue("plotname").equals("."))
 		{
 			if (manager.isInWrongWorld(executor))
-				return "&cYou cannot use that here.";
+				return Config.Message.wrongWorld;
 
 			plot = manager.getCurrentRegionFiltered(executor);
 		}
 		else
 			plot = plotFilter.apply(parameters.get("plotname"));
 		if (plot == null)
-			return "&cYou cannot unapprove that plot.";
+			return Config.Message.Plot.Unapprove.failNoPermission;
 
 		PlotApproval approved = approval.get(plot);
 		if (approved == null)
-			return String.format("&cThe plot %s was not approved.", plot);
+			return String.format(Config.Message.Plot.Unapprove.failNotApproved, plot);
 
 		approval.delete(approved);
-		return String.format("&aThe plot '%s' previously approved by %s has been unapproved.", plot, approved.getApprovedBy());
+		return String.format(Config.Message.Plot.Unapprove.success, plot, approved.getApprovedBy());
 	}
 
 	private final PlotManager manager;

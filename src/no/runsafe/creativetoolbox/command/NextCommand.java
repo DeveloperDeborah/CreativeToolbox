@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlayerTeleport;
 import no.runsafe.creativetoolbox.PlotList;
 import no.runsafe.creativetoolbox.PlotManager;
@@ -26,14 +27,14 @@ public class NextCommand extends PlayerAsyncCallbackCommand<PlayerTeleport>
 		target.who = executor;
 		String plot = plotList.next(executor);
 		if (plot == null)
-			target.message = "&cYou do not have a list of plots.";
+			target.message = Config.Message.Plot.Teleport.failedNoList;
 		else
 		{
 			target.location = manager.getPlotEntrance(plot);
 			if (target.location == null)
-				target.message = String.format("&cPlot '%s' not found.", plot);
+				target.message = String.format(Config.Message.Plot.notFound, plot);
 			else
-				target.message = String.format("&aTeleported to plot %d/%d: '%s'", plotList.current(executor), plotList.count(executor), plot);
+				target.message = String.format(Config.Message.Plot.Teleport.list, plotList.current(executor), plotList.count(executor), plot);
 		}
 		return target;
 	}

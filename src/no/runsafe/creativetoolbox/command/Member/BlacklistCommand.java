@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command.Member;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.PlotMemberBlacklistRepository;
 import no.runsafe.framework.api.IScheduler;
@@ -22,19 +23,17 @@ public class BlacklistCommand extends AsyncCommand
 	@Override
 	public String OnAsyncExecute(ICommandExecutor executor, IArgumentList params)
 	{
-		IPlayer player = params.getValue("player");
-		if (player == null)
-			return "&cUnable to locate player.";
+		IPlayer player = params.getRequired("player");
 
 		if (player instanceof IAmbiguousPlayer)
 			return player.toString();
 
 		if (blacklistRepository.isBlacklisted(player))
-			return "&cThat player is already blacklisted.";
+			return Config.Message.Plot.Member.Blacklist.failAlreadyBlacklisted;
 
 		blacklistRepository.add(executor, player);
 		manager.removeMember(player);
-		return String.format("&aThe player &r%s &ahas been blacklisted.", player.getPrettyName());
+		return String.format(Config.Message.Plot.Member.Blacklist.success, player.getPrettyName());
 	}
 
 	private final PlotMemberBlacklistRepository blacklistRepository;

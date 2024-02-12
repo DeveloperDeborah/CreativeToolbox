@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command.Tag;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.PlotTagRepository;
 import no.runsafe.framework.api.IScheduler;
@@ -20,15 +21,15 @@ public class ClearCommand extends PlayerAsyncCommand
 	public String OnAsyncExecute(IPlayer player, IArgumentList stringStringHashMap)
 	{
 		if (manager.isInWrongWorld(player))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		String plot = manager.getCurrentRegionFiltered(player);
 		if (plot == null)
-			return "&cThere is no plot here.";
+			return Config.Message.Plot.invalid;
 
 		return tagRepository.setTags(plot, null) ?
-			String.format("&aCleared tags for %s.", plot) :
-			String.format("&cCould not clear tags for %s.", plot);
+			String.format(Config.Message.Plot.Tag.clearSuccess, plot) :
+			String.format(Config.Message.Plot.Tag.clearFail, plot);
 	}
 
 	private final PlotManager manager;

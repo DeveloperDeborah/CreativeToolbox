@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotList;
 import no.runsafe.creativetoolbox.database.ApprovedPlotRepository;
@@ -35,7 +36,7 @@ public class JumpCommand extends PlayerAsyncCallbackCommand<JumpCommand.Sudo>
 		JumpKinds kind = params.getValue("kind");
 		if (kind == null)
 			return null;
-		console.debugFine("Jumping to an %s plot", kind.name());
+		console.debugFine(Config.Message.Plot.Teleport.jump, kind.name());
 		List<String> approved = approval.getApprovedPlots();
 		Sudo target = new Sudo();
 		target.player = executor;

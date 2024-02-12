@@ -36,3 +36,131 @@ vote:
     superuser: 10
     moderator: 20
     admin: 30
+paintbrushName: '§bMagical Paintbrush'
+message:
+  wrongWorld: '&cYou cannot use that in this world.'
+  noWorldGuard: '&cError: No WorldGuard installed.'
+  noWorldDefined: '&cNo world defined!'
+  invalidLocation: '&cYou are in an invalid location.'
+  ai:
+    pattern: '(how|can).*(have|claim|get).*plot'
+    needPermissionNoStaff: 'Sorry, %s, but there are no staff online now to give you permission. Ask for help on our discord!'
+    needPermissionStaff: 'First you will need permission to build, %s - I am sure %s would help you out!'
+    plotsNotApproved: '&cYou must either get all your plots approved, or ask a member of staff to grant you a plot, %s.'
+    findFreePlot: 'First you need a free plot, %s, use /ct f to find one! Once there, please use /ct claim.'
+    claimCurrentPlot: '&aYou can claim the plot you are in now, %s; just type /ct claim!'
+  plot:
+    invalid: '&cYou need to stand in a plot to use this command.'
+    invalid2: '&cNo plots found at this location.'
+    notFound: '&cPlot [%s] not found.'
+    noPlotsOwned: '&cYou do not appear to own any plots.'
+    notOwner: '&cYou do not appear to be an owner of %s.'
+    approve:
+      invalid: '&cYou cannot approve that plot.'
+      fail: '&cFailed approving plot %s!'
+      approvedFalse: '&cPlot %s has not been approved.'
+      approvedTrue: '&aPlot %s was approved by %s at %s'
+      generic: 'Plot %s is %s.'
+      genericTrue: 'approved'
+      genericFalse: 'unapproved'
+      global: '&6The creative plot &l%s&r&6 has been approved.'
+    claim:
+      failPreexisting: '&cThis plot is already claimed as %s!'
+      failNotClaimable: '&cYou may not claim a plot here.'
+      failOtherNoPermissions: '&cYou can only claim plots for yourself.'
+      failPreviousNotApproved: '&cYou may not claim another plot before all your current ones have been approved.'
+      fail: '&cUnable to claim a new plot for &r%s &c:('
+      succeedSelf: '&aNew plot [%s] created - use /ct teleport %d to get back to it!'
+      succeedOther: '&aSuccessfully claimed the plot [%s] for &r%s&a!'
+    clean:
+      itemsCleaned: '&a%d items cleaned:'
+      listFormat: '  %s: %d.'
+      cleanFail: '&cNothing to clean'
+      cleanFailNoWorld: '&cNo world!'
+      blocksCleaned: 'Removed %d blocks.'
+      cleanRoadsFail: '&cUnable to regenerate roads!'
+      cleanRoadsSuccess: '&aRegenerated roads.'
+    delete:
+      failApproved: '&cYou may not delete an approved plot!'
+      rightClick: 'Right click ground to confirm deletion of %d region%s.'
+      success: 'Deleted plot [%s].'
+    extend:
+      rightClick: 'Now right click the ground in the plot you wish to extend to include in %s.'
+      failOverlap: 'Unable to extend plot here, overlap detected!'
+      failError: 'An error occurred while extending plot.'
+      success: 'The plot has been extended!'
+    teleport:
+      findFailNoneLeft: '&cSorry, no free plots could be located.'
+      randomFailNoPlotsTagged: '&cSorry, found no plots tagged [%s].'
+      failedNoList: '&cYou do not have a list of plots.'
+      list: '&aTeleported to %s, plot %d/%d'
+      success: '&aTeleported to [%s]'
+      jump: 'Jumping to an %s plot'
+    list:
+      command: '%d plots owned by %s:'
+      interact:
+        genericOwner: '&2Owner&r'
+        genericMember: '&3Member&r'
+        tags: '&7Tags: &o%s&r'
+        member: '   %s: %s'
+        memberTime: '     %s&r'
+        memberNeverSeen: '&cPlayer never seen'
+        claimedBy: '&bClaimed: %s'
+        plotName: '&6Plot: &l%s'
+        playerDoesNotOwnPlots: '&c%s does not own any plots.'
+        approved: '&2[approved &a%s&2]&r'
+        votes: '&2[&a%d&2 vote%s]&r'
+      old:
+        listFormat: '%s - %s'
+        notFound: '&cNo old plots found.'
+        foundNumber: '&a%d plots found'
+        listShowing: 'Showing %d of %d plots found'
+        reasonNull: '&cnull&r'
+        reasonBanned: '&cbanned&r'
+    paintbrush:
+      summon: '&aConjured a paintbrush! Left click to select a paint block, right click to paint with it!'
+      noPermission: '&cYou do not have permission to paint here.'
+      blockChanged: '&ePaintbrush block changed: %s [%o]'
+    regenerate:
+      failApproved: '&cYou may not regenerate an approved plot!'
+      rightClick: 'Right click the ground to confirm regeneration.'
+      fail: 'Could not regenerate plot.'
+      success: 'Plot regenerated.'
+    rename:
+      fail: '&cPlot could not be renamed.'
+      success: '&aPlot %s Renamed to %s.'
+    scan:
+      itemsFound: '%d items found:'
+      listFormat: '  %s: %d.'
+    setEntrance:
+      failNoPermission: '&cYou are not allowed to set the entrance for the region %s'
+      success: '&aEntrance for %s set.'
+    unapprove:
+      failNoPermission: '&cYou cannot unapprove that plot.'
+      failNotApproved: '&cThe plot %s was not approved.'
+      success: '&aThe plot [%s] previously approved by %s has been unapproved.'
+    vote:
+      failNoPermission: '&cYou are not allowed to vote for this plot.'
+      failError: '&cAn error occurred while casting ballot!'
+      success: '&aThank you for voting for the plot [%s].'
+    tag:
+      updateFail: '&cCould not update %s with tag.'
+      updateSuccess: '&aSuccessfully updated tags for plot %s.'
+      clearFail: '&cCould not clear tags for %s.'
+      clearSuccess: '&aCleared tags for %s.'
+      findFailNoTags: '&cNo plots have been tagged with %s.'
+      findSuccessTooMany: '&aFound %d plots:Too many hits to list.'
+      findSuccess: '&aFound %d plots: %s'
+      setFail: '&cUnable to save tags for plot %s.'
+      setSuccess: '&aChanged tags for plot %s.'
+    member:
+      addFailBlacklisted: '&cThe player %s &chas been blacklisted from being added as a member.'
+      addFail: '&cCould not add &r%s &cto the plot %s.'
+      addSuccess: '%s &awas successfully added to the plot %s.'
+      removeFail: '&cCould not remove &r%s &cfrom the plot %s.'
+      removeSuccess: '%s &awas successfully removed from the plot %s.'
+      blacklist:
+        failAlreadyBlacklisted: '&cThat player is already blacklisted.'
+        success: '&aThe player &r%s &ahas been blacklisted.'
+        whitelistFail: '&cThat player is not blacklisted.'
+        whitelistSuccess: '&aThe player &r%s &ahas been removed from the blacklist.'

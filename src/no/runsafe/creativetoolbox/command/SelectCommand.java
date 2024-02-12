@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotCalculator;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
@@ -29,11 +30,11 @@ public class SelectCommand extends PlayerCommand
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
 		if (manager.isInWrongWorld(executor))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		ILocation executorLocation = executor.getLocation();
 		if (executorLocation == null)
-			return "&cYou are in an invalid location.";
+			return Config.Message.Plot.invalid;
 
 		List<String> candidate = filter.apply(worldGuard.getRegionsAtLocation(executorLocation));
 		Rectangle2D area;

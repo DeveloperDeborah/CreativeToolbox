@@ -44,7 +44,7 @@ public class PaintbrushManager implements IPlayerLeftClickBlockEvent, IPlayerRig
 
 		if (!regionControl.playerCanBuildHere(player, targetBlock.getLocation()))
 		{
-			player.sendColouredMessage("&cYou do not have permission to paint here.");
+			player.sendColouredMessage(Config.Message.Plot.Paintbrush.noPermission);
 			return true;
 		}
 
@@ -69,7 +69,7 @@ public class PaintbrushManager implements IPlayerLeftClickBlockEvent, IPlayerRig
 	public void setPaintbrushBlock(IPlayer player, Item setItem)
 	{
 		paintbrushes.put(player, setItem);
-		player.sendColouredMessage("&ePaintbrush block changed: " + setItem.getName() + " [" + setItem.getData() + "]");
+		player.sendColouredMessage(Config.Message.Plot.Paintbrush.blockChanged, setItem.getName(), (int) setItem.getData());
 	}
 
 	@Override

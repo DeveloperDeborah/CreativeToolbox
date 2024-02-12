@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command.Member;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.database.PlotMemberBlacklistRepository;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
@@ -23,10 +24,10 @@ public class WhitelistCommand extends ExecutableCommand
 			return null;
 
 		if (!blacklistRepository.isBlacklisted(player))
-			return "&cThat player is not blacklisted.";
+			return Config.Message.Plot.Member.Blacklist.whitelistFail;
 
 		blacklistRepository.remove(player);
-		return String.format("&aThe player &r%s &ahas been removed from the blacklist.", player.getPrettyName());
+		return String.format(Config.Message.Plot.Member.Blacklist.whitelistSuccess, player.getPrettyName());
 	}
 
 	private final PlotMemberBlacklistRepository blacklistRepository;

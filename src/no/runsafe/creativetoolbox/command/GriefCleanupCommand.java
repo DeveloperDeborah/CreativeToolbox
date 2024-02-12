@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotCalculator;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
@@ -44,12 +45,12 @@ public class GriefCleanupCommand extends PlayerCommand
 	public String OnExecute(IPlayer executor, IArgumentList params)
 	{
 		if (manager.isInWrongWorld(executor))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		Rectangle2D area = getArea(executor.getLocation());
 
 		if (area == null)
-			return "&cThis does not appear to be a valid plot.";
+			return Config.Message.Plot.invalid;
 
 		Target what = params.getValue("what");
 		output.logInformation("%s is running clean-up of '%s' at [%s]", executor.getName(), what, getRegionNameString(executor));
@@ -103,12 +104,12 @@ public class GriefCleanupCommand extends PlayerCommand
 	private String cleanup(IPlayer player, Rectangle2D area, Item... remove)
 	{
 		if (remove.length == 0)
-			return "&cNothing to clean";
+			return Config.Message.Plot.Clean.cleanFail;
 		ILocation max = plotCalculator.getMaxPosition(player.getWorld(), area);
 		ILocation min = plotCalculator.getMinPosition(player.getWorld(), area);
 		IWorld world = player.getWorld();
 		if (world == null)
-			return "&cNo world!";
+			return Config.Message.Plot.Clean.cleanFailNoWorld;
 		int counter = 0;
 		for (int x = min.getBlockX(); x <= max.getBlockX(); ++x)
 		{
@@ -125,14 +126,14 @@ public class GriefCleanupCommand extends PlayerCommand
 				}
 			}
 		}
-		return String.format("Removed %d blocks.", counter);
+		return String.format(Config.Message.Plot.Clean.blocksCleaned, counter);
 	}
 
 	private String regeneratePadding(IPlayer player, Rectangle2D plotArea)
 	{
 		List<Rectangle2D> padding = plotCalculator.getPaddingSelection(plotArea);
 		if (padding == null || padding.isEmpty())
-			return "&cUnable to regenerate roads!";
+			return Config.Message.Plot.Clean.cleanRoadsFail;
 		for (Rectangle2D area : padding)
 		{
 			worldEdit.regenerate(
@@ -142,7 +143,7 @@ public class GriefCleanupCommand extends PlayerCommand
 				false
 			);
 		}
-		return "&aRegenerated roads.";
+		return Config.Message.Plot.Clean.cleanRoadsSuccess;
 	}
 
 	private final IRegionControl worldGuard;

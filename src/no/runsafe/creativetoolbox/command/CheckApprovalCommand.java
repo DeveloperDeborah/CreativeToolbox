@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.database.ApprovedPlotRepository;
 import no.runsafe.creativetoolbox.database.PlotApproval;
@@ -36,14 +37,14 @@ public class CheckApprovalCommand extends AsyncCommand
 		{
 			List<String> here = plotFilter.apply(worldGuardInterface.getRegionsAtLocation(((IPlayer) executor).getLocation()));
 			if (here == null || here.isEmpty())
-				return "&cNo plot here";
+				return Config.Message.Plot.invalid;
 			plot = here.get(0);
 		}
 		PlotApproval approval = repository.get(plot);
 		if (approval == null)
-			return String.format("&cPlot %s has not been approved.", plot);
+			return String.format(Config.Message.Plot.Approve.approvedFalse, plot);
 
-		return String.format("&aPlot %s was approved by %s at %s", plot, approval.getApprovedBy(), approval.getApproved());
+		return String.format(Config.Message.Plot.Approve.approvedTrue, plot, approval.getApprovedBy(), approval.getApproved());
 	}
 
 	private final ApprovedPlotRepository repository;

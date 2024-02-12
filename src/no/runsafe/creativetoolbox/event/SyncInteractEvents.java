@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.event;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotCalculator;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
@@ -78,14 +79,13 @@ public class SyncInteractEvents implements IPlayerRightClickBlock
 				PlotChunkGenerator.Mode mode = generator.get(player);
 				plotGenerator.setMode(mode);
 			}
-
 			IWorld playerWorld = player.getWorld();
 			ILocation minPos = calculator.getMinPosition(playerWorld, area);
 			ILocation maxPos = calculator.getMaxPosition(playerWorld, area);
 			player.sendColouredMessage(
 				worldEdit.regenerate(player, minPos, maxPos, false)
-					? "Plot regenerated."
-					: "Could not regenerate plot."
+					? Config.Message.Plot.Regenerate.success
+					: Config.Message.Plot.Regenerate.fail
 			);
 			console.logInformation("%s just regenerated plots at [%s].", player.getName(), getRegionNameString(player));
 
@@ -136,7 +136,7 @@ public class SyncInteractEvents implements IPlayerRightClickBlock
 			manager.delete(player, region);
 			plotGenerator.setMode(PlotChunkGenerator.Mode.NORMAL);
 			worldEdit.regenerate(player, minPos, maxPos, false);
-			results.append(String.format("Deleted plot '%s'.", region));
+			results.append(String.format(Config.Message.Plot.Delete.success, region));
 			console.logInformation(String.format("%s deleted plot %s", player.getName(), region));
 		}
 		if (!nothing)

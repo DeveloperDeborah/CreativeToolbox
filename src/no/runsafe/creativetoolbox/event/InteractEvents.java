@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.event;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.PlotLogRepository;
@@ -112,7 +113,7 @@ public class InteractEvents implements IPlayerRightClickBlock, IPlayerInteractEn
 	{
 		if (!this.worldGuardInterface.serverHasWorldGuard())
 		{
-			triggerPlayer.sendColouredMessage("&cError: No WorldGuard installed.");
+			triggerPlayer.sendColouredMessage(Config.Message.noWorldGuard);
 			return;
 		}
 
@@ -124,14 +125,14 @@ public class InteractEvents implements IPlayerRightClickBlock, IPlayerInteractEn
 				"\n"
 			));
 		else
-			triggerPlayer.sendColouredMessage("&c%s does not own any plots.", checkPlayer.getPrettyName());
+			triggerPlayer.sendColouredMessage(Config.Message.Plot.List.Interact.playerDoesNotOwnPlots, checkPlayer.getPrettyName());
 	}
 
 	private void listPlotsByLocation(ILocation location, IPlayer player)
 	{
 		if (!this.worldGuardInterface.serverHasWorldGuard())
 		{
-			player.sendColouredMessage("&cError: No WorldGuard installed.");
+			player.sendColouredMessage(Config.Message.noWorldGuard);
 			return;
 		}
 
@@ -140,13 +141,13 @@ public class InteractEvents implements IPlayerRightClickBlock, IPlayerInteractEn
 		if (regions != null && !regions.isEmpty())
 			for (String regionName : regions)
 			{
-				player.sendColouredMessage("&6Plot: &l%s", manager.tag(player, regionName));
+				player.sendColouredMessage(Config.Message.Plot.List.Interact.plotName, manager.tag(player, regionName));
 				listClaimInfo(player, regionName);
 				listTags(player, regionName);
 				listPlotMembers(player, regionName);
 			}
 		else
-			player.sendColouredMessage("&cNo plots found at this location.");
+			player.sendColouredMessage(Config.Message.Plot.invalid2);
 	}
 
 	private void listClaimInfo(IPlayer player, String regionName)
@@ -157,7 +158,7 @@ public class InteractEvents implements IPlayerRightClickBlock, IPlayerInteractEn
 			if (claim == null)
 				return;
 
-			player.sendColouredMessage("&bClaimed: %s", claim);
+			player.sendColouredMessage(Config.Message.Plot.List.Interact.claimedBy, claim);
 		}
 	}
 
@@ -167,7 +168,7 @@ public class InteractEvents implements IPlayerRightClickBlock, IPlayerInteractEn
 		{
 			List<String> tags = tagRepository.getTags(regionName);
 			if (!tags.isEmpty())
-				player.sendColouredMessage("&7Tags: &o%s&r", StringUtils.join(tags, " "));
+				player.sendColouredMessage(Config.Message.Plot.List.Interact.tags, StringUtils.join(tags, " "));
 		}
 	}
 
@@ -175,23 +176,26 @@ public class InteractEvents implements IPlayerRightClickBlock, IPlayerInteractEn
 	{
 		Set<IPlayer> owners = worldGuardInterface.getOwnerPlayers(manager.getWorld(), regionName);
 		for (IPlayer owner : owners)
-			listPlotMember(player, "&2Owner&r", owner, true);
+			listPlotMember(player, Config.Message.Plot.List.Interact.genericOwner, owner, true);
 
 		Set<IPlayer> members = worldGuardInterface.getMemberPlayers(manager.getWorld(), regionName);
 		for (IPlayer member : members)
-			listPlotMember(player, "&3Member&r", member, false);
+			listPlotMember(player, Config.Message.Plot.List.Interact.genericMember, member, false);
 	}
 
 	private void listPlotMember(IPlayer player, String label, IPlayer member, boolean showSeen)
 	{
 		if (member != null)
 		{
-			player.sendColouredMessage("   %s: %s", label, member.getPrettyName());
+			player.sendColouredMessage(Config.Message.Plot.List.Interact.member, label, member.getPrettyName());
 
 			if (showSeen && player.hasPermission("runsafe.creative.list.seen"))
 			{
 				String seen = member.getLastSeen(player);
-				player.sendColouredMessage("     %s&r", (seen == null ? "&cPlayer never seen" : seen));
+				player.sendColouredMessage(
+					Config.Message.Plot.List.Interact.memberTime,
+					(seen == null ? Config.Message.Plot.List.Interact.memberNeverSeen : seen)
+				);
 			}
 		}
 	}

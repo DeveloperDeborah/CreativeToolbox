@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlayerTeleport;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.framework.api.ILocation;
@@ -34,7 +35,7 @@ public class FindFreePlotCommand extends PlayerAsyncCallbackCommand<PlayerTelepo
 		while (target.location != null && manager.plotIsTaken(target.location));
 
 		if (target.location == null)
-			target.message = "&cSorry, no free plots could be located.";
+			target.message = Config.Message.Plot.Teleport.findFailNoneLeft;
 		return target;
 	}
 

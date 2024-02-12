@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command.Tag;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotList;
 import no.runsafe.creativetoolbox.database.PlotTagRepository;
 import no.runsafe.framework.api.IScheduler;
@@ -27,12 +28,12 @@ public class FindCommand extends AsyncCommand
 		String lookup = param.getRequired("lookup");
 		List<String> hits = tagRepository.findPlots(lookup);
 		if (hits.isEmpty())
-			return String.format("&cNo plots have been tagged with %s..", lookup);
+			return String.format(Config.Message.Plot.Tag.findFailNoTags, lookup);
 		if (executor instanceof IPlayer)
 			plotList.set((IPlayer) executor, hits);
 		if (hits.size() > 20)
-			return String.format("&aFound %d plots:Too many hits to list.", hits.size());
-		return String.format("&aFound %d plots: %s", hits.size(), StringUtils.join(hits, ", "));
+			return String.format(Config.Message.Plot.Tag.findSuccessTooMany, hits.size());
+		return String.format(Config.Message.Plot.Tag.findSuccess, hits.size(), StringUtils.join(hits, ", "));
 	}
 
 	private final PlotTagRepository tagRepository;

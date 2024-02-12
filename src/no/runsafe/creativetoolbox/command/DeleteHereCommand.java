@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotCalculator;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
@@ -39,22 +40,22 @@ public class DeleteHereCommand extends PlayerAsyncCommand
 	public String OnAsyncExecute(IPlayer executor, IArgumentList parameters)
 	{
 		if (manager.isInWrongWorld(executor))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 		List<String> delete = filter.apply(worldGuard.getRegionsAtLocation(executor.getLocation()));
 		if (delete == null || delete.isEmpty())
-			return "&cNo regions to delete!";
+			return Config.Message.Plot.invalid;
 		Map<String, Rectangle2D> regions = new HashMap<>();
 		for (String region : delete)
 		{
 			PlotApproval approval = approvedPlotRepository.get(region);
 			if (approval != null && approval.getApproved() != null)
-				return "&cYou may not delete an approved plot!";
+				return Config.Message.Plot.Delete.failApproved;
 
 			Rectangle2D area = plotCalculator.pad(worldGuard.getRectangle(executor.getWorld(), region));
 			regions.put(region, area);
 		}
 		interactEvents.startDeletion(executor, regions);
-		return String.format("Right click ground to confirm deletion of %d region%s.", regions.size(), regions.size() > 1 ? "s" : "");
+		return String.format(Config.Message.Plot.Delete.rightClick, regions.size(), regions.size() > 1 ? "s" : "");
 	}
 
 	private final PlotManager manager;

@@ -147,10 +147,10 @@ public class PlotManager implements IConfigurationChanged, IServerReady, IPlayer
 	private String formatReason(Duration status)
 	{
 		if (status == null)
-			return "&cnull&r";
+			return Config.Message.Plot.List.Old.reasonNull;
 
 		if (status.equals(BANNED))
-			return "&cbanned&r";
+			return Config.Message.Plot.List.Old.reasonBanned;
 
 		return TimeFormatter.formatDuration(status);
 	}
@@ -241,13 +241,16 @@ public class PlotManager implements IConfigurationChanged, IServerReady, IPlayer
 		{
 			PlotApproval approved = plotApproval.get(plot);
 			if (approved != null && approved.getApproved() != null)
-				tags.add(String.format("&2[approved &a%s&2]&r", DateFormatUtils.format(approved.getApproved().toEpochMilli(), dateFormat)));
+				tags.add(String.format(
+					Config.Message.Plot.List.Interact.approved,
+					DateFormatUtils.format(approved.getApproved().toEpochMilli(), dateFormat)
+				));
 		}
 		if (player.hasPermission("runsafe.creative.vote.tally"))
 		{
 			int voteCount = voteRepository.tally(plot);
 			if (voteCount > 0)
-				tags.add(String.format("&2[&a%d&2 vote%s]&r", voteCount, voteCount > 1 ? "s" : ""));
+				tags.add(String.format(Config.Message.Plot.List.Interact.votes, voteCount, voteCount > 1 ? "s" : ""));
 		}
 		return StringUtils.join(tags, " ");
 	}
@@ -327,13 +330,13 @@ public class PlotManager implements IConfigurationChanged, IServerReady, IPlayer
 					continue;
 
 				debugger.debugFine("Plot (%d,%d) is taken!", column, row);
-				player.sendColouredMessage("Unable to extend plot here, overlap detected!");
+				player.sendColouredMessage(Config.Message.Plot.Extend.failOverlap);
 				return;
 			}
 		}
 		if (!worldGuard.redefineRegion(world, target, targetSize.getMinPosition(), targetSize.getMaxPosition()))
 		{
-			player.sendColouredMessage("An error occurred while extending plot.");
+			player.sendColouredMessage(Config.Message.Plot.Extend.failError);
 			return;
 		}
 
@@ -341,7 +344,7 @@ public class PlotManager implements IConfigurationChanged, IServerReady, IPlayer
 			for (long row = targetSize.getMinimumRow(); row <= targetRow; ++row)
 				setTaken(column, row);
 
-		player.sendColouredMessage("The plot has been extended!");
+		player.sendColouredMessage(Config.Message.Plot.Extend.success);
 	}
 
 	public void delete(IPlayer deletor, String region)

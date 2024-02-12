@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.event.InteractEvents;
 import no.runsafe.framework.api.command.argument.IArgumentList;
@@ -19,13 +20,13 @@ public class ExtendCommand extends PlayerCommand
 	public String OnExecute(IPlayer player, IArgumentList stringStringHashMap)
 	{
 		if (manager.isInWrongWorld(player))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 
 		String target = manager.getCurrentRegionFiltered(player);
 		if (target == null)
-			return "&cThere is no plot defined here.";
+			return Config.Message.Plot.invalid;
 		interactEvents.startPlotExtension(player, target);
-		return String.format("Now right click the ground in the plot you wish to extend to include in %s.", target);
+		return String.format(Config.Message.Plot.Extend.rightClick, target);
 	}
 
 	private final PlotManager manager;

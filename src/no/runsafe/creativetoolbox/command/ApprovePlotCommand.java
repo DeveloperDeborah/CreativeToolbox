@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.PlotApproval;
@@ -21,18 +22,18 @@ public class ApprovePlotCommand extends PlayerAsyncCommand
 	public String OnAsyncExecute(IPlayer executor, IArgumentList parameters)
 	{
 		if (manager.isInWrongWorld(executor))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 		String plot = parameters.getValue("plotname");
 		if (plot == null || plot.equals("."))
 			plot = manager.getCurrentRegionFiltered(executor);
 		else
 			plot = plotFilter.apply(plot);
 		if (plot == null)
-			return "&cYou cannot approve that plot.";
+			return Config.Message.Plot.Approve.invalid;
 
 		PlotApproval approval = manager.approve(executor.getName(), plot);
 		if (approval == null)
-			return String.format("&cFailed approving plot %s!", plot);
+			return String.format(Config.Message.Plot.Approve.fail, plot);
 
 		return null;
 	}

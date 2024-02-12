@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command.Tag;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.creativetoolbox.database.PlotTagRepository;
 import no.runsafe.framework.api.IScheduler;
@@ -22,10 +23,10 @@ public class AddCommand extends PlayerAsyncCommand
 	public String OnAsyncExecute(IPlayer player, IArgumentList params)
 	{
 		if (manager.isInWrongWorld(player))
-			return "&cYou cannot use that here.";
+			return Config.Message.wrongWorld;
 		String plot = manager.getCurrentRegionFiltered(player);
 		if (plot == null)
-			return "&cThere is no plot here.";
+			return Config.Message.Plot.invalid;
 
 		String[] tags = ChatColour.Strip(params.getValue("tag")).split("\\s+");
 		boolean success = true;
@@ -33,7 +34,7 @@ public class AddCommand extends PlayerAsyncCommand
 			success = success && tagRepository.addTag(plot, tag);
 
 		return String.format(
-			success ? "&aSuccessfully updated tags for plot %s." : "&cCould not update %s with tag.",
+			success ? Config.Message.Plot.Tag.updateSuccess : Config.Message.Plot.Tag.updateFail,
 			plot
 		);
 	}

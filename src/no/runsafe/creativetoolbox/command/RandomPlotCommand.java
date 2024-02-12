@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlotFilter;
 import no.runsafe.creativetoolbox.database.PlotTagRepository;
 import no.runsafe.framework.api.IScheduler;
@@ -34,7 +35,7 @@ public class RandomPlotCommand extends PlayerAsyncCallbackCommand<RandomPlotComm
 			plots = tagRepository.findPlots(tag);
 			if (plots.isEmpty())
 			{
-				executor.sendColouredMessage("&cSorry, found no plots tagged \"%s\".", tag);
+				executor.sendColouredMessage(Config.Message.Plot.Teleport.randomFailNoPlotsTagged, tag);
 				return null;
 			}
 		}

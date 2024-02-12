@@ -1,5 +1,6 @@
 package no.runsafe.creativetoolbox.command;
 
+import no.runsafe.creativetoolbox.Config;
 import no.runsafe.creativetoolbox.PlayerTeleport;
 import no.runsafe.creativetoolbox.PlotManager;
 import no.runsafe.framework.api.ILocation;
@@ -28,7 +29,7 @@ public class TeleportCommand extends PlayerAsyncCallbackCommand<PlayerTeleport>
 			plot = manager.getLatestPlot(executor);
 			if (plot == null)
 			{
-				target.message = "&cYou do not appear to own any plots.";
+				target.message = Config.Message.Plot.noPlotsOwned;
 				return target;
 			}
 		}
@@ -40,9 +41,9 @@ public class TeleportCommand extends PlayerAsyncCallbackCommand<PlayerTeleport>
 				plot = String.format("%s_%s", executor.getName(), plot);
 		}
 		if (target.location == null)
-			target.message = String.format("&cPlot '%s' not found.", plot);
+			target.message = String.format(Config.Message.Plot.notFound, plot);
 		else
-			target.message = String.format("&aTeleported to '%s'", plot);
+			target.message = String.format(Config.Message.Plot.Teleport.success, plot);
 
 		return target;
 	}

@@ -38,7 +38,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(FrameworkHooks.class);
 
 		// Plugin components
-		addComponent(ConfigurationManager.class);
+		addComponent(Config.class);
 		addComponent(PlotMemberRepository.class);
 		addComponent(PlotLogRepository.class);
 		addComponent(PlotFilter.class);
